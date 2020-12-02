@@ -1,0 +1,70 @@
+version: '3'
+services: 
+    web_sever:
+        image: golang:1.14
+        container_name: beego_sever
+        privileged: true
+        ports: 
+            - "9000:9000"
+        environment: 
+            - "TZ=Asia/Shanghai"
+        command: 
+            - sh
+            - -c
+            - |
+                go env -w GO111MODULE=on
+                go env -w GOPROXY=https://goproxy.cn,direct 
+                cd /tmp
+                cd ./beego_jwt
+                go run ./main.go
+        volumes: 
+            - ./:/tmp/beego_jwt
+        links: 
+            - db
+            - redis
+            - es
+
+    db:
+        image: mysql
+        container_name: jwt_mysql
+        privileged: true
+        environment: 
+            - "MYSQL_ROOT_PASSWORD=1234"
+            - "MYSQL_DATABASE=jwt_test"
+            - "TZ=Asia/Shanghai"
+        volumes: 
+            #- ./data/mysql/datadir:/var/lib/mysql
+            - ./data/mysql/source:/docker-entrypoint-initdb.d
+            #- ./data/mysql/mydir:/mydir
+        ports:
+            - 3309:3306
+
+
+    es:
+        image: elasticsearch:6.8.13
+        container_name: jwt_es
+        environment: 
+            - "discovery.type=single-node"
+            - "TZ=Asia/Shanghai"
+        ports: 
+            - "9200:9200"
+
+
+    head:
+        image: containerize/elastichd
+        container_name: jwt_head
+        environment: 
+            - "TZ=Asia/Shanghai"
+            - "discovery.type=single-node"
+        links: 
+            - es
+        ports: 
+            - "9800:9800"
+
+    redis:
+        image: redis
+        container_name: jwt_redis
+        environment: 
+            - "TZ=Asia/Shanghai"
+        ports: 
+            - "6378:6379"

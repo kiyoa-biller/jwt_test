@@ -1,0 +1,24 @@
+use jwt_test;
+CREATE TABLE `user` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `username` VARCHAR(64) NOT NULL DEFAULT '' COMMENT '用户名',
+  `password` VARCHAR(64) DEFAULT NULL COMMENT '密码',
+  `email` VARCHAR(128) DEFAULT NULL COMMENT '电子邮箱',
+  `nickname` VARCHAR(64) DEFAULT NULL COMMENT '昵称',
+  `realname` VARCHAR(64) DEFAULT NULL COMMENT '真实姓名',
+  `phone` VARCHAR(16) DEFAULT NULL COMMENT '手机号',
+  `idcard` VARCHAR(16) DEFAULT NULL COMMENT '身份证号',
+  `register_time` DATETIME DEFAULT NULL COMMENT '注册时间',
+  `register_ip` VARCHAR(64) DEFAULT NULL COMMENT '注册ip',
+  `last_login_time` DATETIME DEFAULT NULL COMMENT '最后登录时间',
+  `last_login_ip` VARCHAR(64) DEFAULT NULL COMMENT '最后登录ip',
+  `sex` TINYINT DEFAULT 0 COMMENT '性别,0为男，1为女',
+  `birthday` VARCHAR(64) DEFAULT NULL COMMENT '出生日期',
+  `province` VARCHAR(64) DEFAULT NULL COMMENT '省',
+  `city` VARCHAR(64) DEFAULT NULL COMMENT '城市',
+  `level` TINYINT  DEFAULT NULL COMMENT '用户级别',
+  `login_count` INT(11) DEFAULT NULL COMMENT '登录次数',
+  `del` INT(3) DEFAULT NULL COMMENT '是否删除',
+  `salt` VARCHAR(128) DEFAULT NULL  COMMENT '加密因子',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
